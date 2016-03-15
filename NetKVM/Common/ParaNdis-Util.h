@@ -336,11 +336,6 @@ private:
     CNdisSharedMemory& operator= (const CNdisSharedMemory&) = delete;
 };
 
-bool __inline ParaNdis_IsPassive()
-{
-    return (KeGetCurrentIrql() < DISPATCH_LEVEL);
-}
-
 #if NDIS_SUPPORT_NDIS620
 #define RW_LOCK_62
 #elif NDIS_SUPPORT_NDIS6
