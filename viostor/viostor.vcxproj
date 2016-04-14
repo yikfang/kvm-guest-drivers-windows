@@ -99,6 +99,7 @@
     <OutDir>objfre_win8_x86\i386\</OutDir>
     <IntDir>objfre_win8_x86\i386\</IntDir>
     <TargetName>viostor</TargetName>
+    <InfArch>x86.6.2</InfArch>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'">
     <OutDir>objfre_win7_x86\i386\</OutDir>
@@ -117,6 +118,7 @@
     <OutDir>objfre_win8_amd64\amd64\</OutDir>
     <IntDir>objfre_win8_amd64\amd64\</IntDir>
     <TargetName>viostor</TargetName>
+    <InfArch>amd64.6.2</InfArch>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">
     <OutDir>objfre_win7_amd64\amd64\</OutDir>
@@ -154,8 +156,7 @@
       <AdditionalDependencies>%(AdditionalDependencies);$(KernelBufferOverflowLib);$(DDK_LIB_PATH)\ntoskrnl.lib;$(DDK_LIB_PATH)\storport.lib;$(DDK_LIB_PATH)\wdm.lib;virtiolib.lib</AdditionalDependencies>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SDK_INC_PATH);%(AdditionalIncludeDirectories);..\Inc</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
       <Command>move objfre_win8_x86\i386\WinLH.inf objfre_win8_x86\i386\viostor.inf</Command>
@@ -255,8 +256,7 @@
       <AdditionalDependencies>%(AdditionalDependencies);$(KernelBufferOverflowLib);$(DDK_LIB_PATH)\ntoskrnl.lib;$(DDK_LIB_PATH)\storport.lib;$(DDK_LIB_PATH)\wdm.lib;virtiolib.lib</AdditionalDependencies>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SDK_INC_PATH);%(AdditionalIncludeDirectories);..\Inc</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
       <Command>move objfre_win8_amd64\amd64\WinLH.inf objfre_win8_amd64\amd64\viostor.inf</Command>
@@ -342,16 +342,7 @@
     <ClInclude Include="virtio_stor_utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="virtio_stor.rc">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Win10 Release|x64'">$(SDK_INC_PATH)</AdditionalIncludeDirectories>
-      <ShowProgress Condition="'$(Configuration)|$(Platform)'=='Win10 Release|x64'">
-      </ShowProgress>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Win10 Release|Win32'">
-      </PreprocessorDefinitions>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Win10 Release|Win32'">$(SDK_INC_PATH)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Win10 Release|x64'">
-      </PreprocessorDefinitions>
-    </ResourceCompile>
+    <ResourceCompile Include="virtio_stor.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="virtio_pci.c" />
