@@ -1,5 +1,6 @@
 @echo off
 : Param1 - Win10 | Win8 | Win7 | Wlh
+setlocal
 : Param2 - x86|x64
 : Param3 - sys name
  
@@ -59,7 +60,11 @@ if /i "%1"=="Win7" goto create_win7
 goto error_inf2cat
 
 :create_vista
-setlocal
+if /i "%2"=="x86" set _OSMASK_=Vista_X86,Server2008_X86,7_X86
+if /i "%2"=="x64" set _OSMASK_=Vista_X64,Server2008_X64,7_X64,Server2008R2_X64
+goto run_inf2cat
+
+:create_win7
 if /i "%2"=="x86" set _OSMASK_=Vista_X86,Server2008_X86,7_X86
 if /i "%2"=="x64" set _OSMASK_=Vista_X64,Server2008_X64,7_X64,Server2008R2_X64
 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %INST_ARC%
@@ -73,7 +78,6 @@ call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %INS
 goto run_inf2cat
 
 :create_win8
-setlocal
 if not exist %DVL_PATH_AND_NAME% goto do_the_job
 if /i "%2"=="x64" copy /Y %DVL_PATH_AND_NAME% .\Install\%INST_OS%\%INST_ARC%\
 :do_the_job
@@ -97,16 +101,9 @@ echo "Error setting OS mask for inf2cat"
 goto after_inf2cat
 
 :run_inf2cat
+setlocal
+call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" %INST_ARC%
 inf2cat /driver:.\Install\%INST_OS%\%INST_ARC% /os:%_OSMASK_%
+endlocal
 
 :after_inf2cat
-
-set INST_OS=
-set INST_ARC=
-set SYS_NAME=
-set SYS_PATH_AND_NAME=
-set PDB_PATH_AND_NAME=
-set INF_PATH_AND_NAME=
-set DVL_PATH_AND_NAME=
-set DDKVER=
-set BUILDROOT=
