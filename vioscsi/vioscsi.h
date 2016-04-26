@@ -276,7 +276,7 @@ typedef struct _ADAPTER_EXTENSION {
     ULONG                 queue_depth;
     BOOLEAN               dump_mode;
 
-    ULONG                 features;
+    ULONGLONG             features;
 
     ULONG                 msix_vectors;
     BOOLEAN               msix_enabled;
