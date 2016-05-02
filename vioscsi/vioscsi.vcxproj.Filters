@@ -53,9 +53,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Mofcomp Include="vioscsi.mof">
-      <Filter>Driver Files</Filter>
-    </Mofcomp>
-  </ItemGroup>
 </Project>
