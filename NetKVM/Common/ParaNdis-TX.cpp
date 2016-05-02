@@ -571,6 +571,8 @@ bool CParaNdisTX::SendMapped(bool IsInterrupt, PNET_BUFFER_LIST &NBLFailNow)
     return false;
 }
 
+#pragma warning(push)
+#pragma warning(disable:26135)
 bool CParaNdisTX::DoPendingTasks(bool IsInterrupt)
 {
     ONPAUSECOMPLETEPROC CallbackToCall = nullptr;
@@ -611,6 +613,7 @@ bool CParaNdisTX::DoPendingTasks(bool IsInterrupt)
         NdisMSendNetBufferListsComplete(m_Context->MiniportHandle, pNBLReturnNow,
                                         NDIS_SEND_COMPLETE_FLAGS_DISPATCH_LEVEL);
     }
+#pragma warning(pop)
 
 #pragma warning(suppress: 26110)
     NdisDprReleaseSpinLock(&m_Context->m_CompletionLock);

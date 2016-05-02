@@ -60,6 +60,7 @@ public:
 
 #pragma warning(push)
 #pragma warning(disable:28167) // The function changes IRQL and doesn't restore
+#pragma warning(disable:26135)
     void Lock()
     { NdisAcquireSpinLock(&m_Lock); }
 #pragma warning(disable:26110) // Caller failing to hold lock before calling function 'KeReleaseSpinLock'
