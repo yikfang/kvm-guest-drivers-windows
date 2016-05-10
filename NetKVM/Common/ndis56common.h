@@ -97,9 +97,7 @@ typedef struct _tagPARANDIS_RECEIVE_QUEUE
 #include "ParaNdis-RX.h"
 #include "ParaNdis-CX.h"
 
-#include "ParaNdis-VirtIO.h"
-
-struct CPUPathesBundle : public CNdisAllocatable<CPUPathesBundle, 'CPPB'> {
+struct CPUPathesBundle : public CPlacementAllocatable {
     CParaNdisRX rxPath;
     bool        rxCreated = false;
 
