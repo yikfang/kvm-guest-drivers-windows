@@ -69,6 +69,7 @@ extern "C"
 #define _Function_class_(x)
 #endif
 
+#include "ParaNdis-SM.h"
 #include "ParaNdis-RSS.h"
 
 typedef union _tagTcpIpPacketParsingResult tTcpIpPacketParsingResult;
@@ -378,6 +379,9 @@ typedef struct _tagPARANDIS_ADAPTER
     ULONG                   PacketFilter;
     ULONG                   DummyLookAhead;
     ULONG                   nVirtioHeaderSize;
+
+    CMiniportStateMachine   m_StateMachine;
+
     /* send part */
     NDIS_STATISTICS_INFO    Statistics;
     struct

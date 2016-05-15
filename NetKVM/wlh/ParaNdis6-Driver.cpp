@@ -161,6 +161,8 @@ static NDIS_STATUS ParaNdis6_Initialize(
         NdisAllocateSpinLock(&pContext->m_CompletionLock);
         pContext->m_CompletionLockCreated = true;
 
+        new (&pContext->m_StateMachine) CMiniportStateMachine;
+
         new (&pContext->m_PauseLock) CNdisRWLock();
         if (!pContext->m_PauseLock.Create(pContext->MiniportHandle))
         {
@@ -326,6 +328,11 @@ static NDIS_STATUS ParaNdis6_Initialize(
 
         pContext->m_PauseLock.~CNdisRWLock();
 
+        pContext->m_StateMachine.~CMiniportStateMachine();
+
+        if (pContext->IODevice != nullptr)
+            NdisFreeMemoryWithTagPriority(pContext->MiniportHandle, pContext->IODevice, PARANDIS_MEMORY_TAG);
+
         NdisFreeMemory(pContext, 0, 0);
         pContext = NULL;
     }
@@ -354,6 +361,7 @@ static NDIS_STATUS ParaNdis6_Initialize(
 
     if (pContext && status == NDIS_STATUS_SUCCESS)
     {
+        pContext->m_StateMachine.NotifyInitialized();
         ParaNdis_DebugRegisterMiniport(pContext, TRUE);
     }
 
@@ -449,6 +457,9 @@ static NDIS_STATUS ParaNdis6_Pause(
         // pause exit
         ParaNdis_DebugHistory(pContext, hopSysPause, NULL, 0, 0, 0);
     }
+
+    pContext->m_StateMachine.NotifyPaused();
+
     return status;
 }
 
@@ -468,6 +479,8 @@ static NDIS_STATUS ParaNdis6_Restart(
     DEBUG_ENTRY(0);
 
     UNREFERENCED_PARAMETER(miniportRestartParameters);
+
+    pContext->m_StateMachine.NotifyRestarted();
 
     ParaNdis_DebugHistory(pContext, hopSysResume, NULL, 1, 0, 0);
     ParaNdis6_SendPauseRestart(pContext, FALSE, NULL);
@@ -567,6 +580,9 @@ VOID ParaNdis_Suspend(PARANDIS_ADAPTER *pContext)
     {
         ParaNdis6_ReceivePauseRestart(pContext, TRUE, NULL);
     }
+
+    pContext->m_StateMachine.NotifyPaused();
+
     DEBUG_EXIT_STATUS(0, 0);
 }
 
@@ -593,6 +609,8 @@ VOID ParaNdis_Resume(PARANDIS_ADAPTER *pContext)
         ParaNdis6_SendPauseRestart(pContext, FALSE, NULL);
         ParaNdis6_ReceivePauseRestart(pContext, FALSE, NULL);
     }
+
+    pContext->m_StateMachine.NotifyRestarted();
 }
 
 
