@@ -329,12 +329,9 @@ typedef struct _tagPARANDIS_ADAPTER
     NDIS_HANDLE             MiniportHandle;
     NDIS_HANDLE             InterruptHandle;
     NDIS_HANDLE             BufferListsPool;
-    NDIS_EVENT              ResetEvent;
-
-    CPciResources           PciResources;
-    VirtIODevice            IODevice;
-    CNdisSharedMemory       *pPageAllocator;
-
+    tAdapterResources       AdapterResources;
+    PVOID                   pIoPortOffset;
+    VirtIODevice            *IODevice;
     LARGE_INTEGER           LastTxCompletionTimeStamp;
 #ifdef PARANDIS_DEBUG_INTERRUPTS
     LARGE_INTEGER           LastInterruptTimeStamp;
@@ -396,12 +393,6 @@ typedef struct _tagPARANDIS_ADAPTER
         ULONG framesRxCSHwMissedGood;
         ULONG framesFilteredOut;
     } extraStatistics;
-    tSendReceiveState       ReceiveState;
-    ONPAUSECOMPLETEPROC     ReceivePauseCompletionProc;
-
-    CNdisRWLock             m_PauseLock;
-
-    CNdisRefCounter         m_rxPacketsOutsideRing;
 
     /* initial number of free Tx descriptor(from cfg) - max number of available Tx descriptors */
     UINT                    maxFreeTxDescriptors;
@@ -554,9 +545,6 @@ NDIS_STATUS ParaNdis_SetupRSSQueueMap(PARANDIS_ADAPTER *pContext);
 VOID ParaNdis_ReceiveQueueAddBuffer(
     PPARANDIS_RECEIVE_QUEUE pQueue,
     pRxNetDescriptor pBuffer);
-
-VOID ParaNdis_TestPausing(
-    PARANDIS_ADAPTER *pContext);
 
 VOID ParaNdis_ProcessorNumberToGroupAffinity(
     PGROUP_AFFINITY Affinity,
