@@ -265,9 +265,6 @@ public:
     bool Restart()
     { return virtqueue_enable_cb(m_VirtQueue); }
 
-    bool HasPacketsInHW()
-    { return !m_DescriptorsInUse.IsEmpty(); }
-
     //TODO: Needs review/temporary?
     void EnableInterrupts()
     { virtqueue_enable_cb(m_VirtQueue); }
