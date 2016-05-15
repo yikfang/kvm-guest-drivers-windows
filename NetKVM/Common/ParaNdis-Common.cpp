@@ -1707,8 +1707,6 @@ bool ParaNdis_DPCWorkBody(PARANDIS_ADAPTER *pContext, ULONG ulMaxPacketsToIndica
     {
         bool bDoKick = false;
 
-        InterlockedExchange(&pContext->bDPCInactive, 0);
-
         if (RxDPCWorkBody(pContext, pathBundle, numOfPacketsToIndicate))
         {
             stillRequiresProcessing = true;
