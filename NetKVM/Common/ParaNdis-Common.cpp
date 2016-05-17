@@ -610,6 +610,22 @@ RestoreMAC(PPARANDIS_ADAPTER pContext)
     SetDeviceMAC(pContext, pContext->PermanentMacAddress);
 }
 
+static NDIS_STATUS ErrorToNdisStatus(int error) {
+    switch (error) {
+    case 0:
+        return NDIS_STATUS_SUCCESS;
+    case -ENOENT:
+    case -ENODEV:
+        return NDIS_STATUS_ADAPTER_NOT_FOUND;
+    case -ENOMEM:
+        return NDIS_STATUS_RESOURCES;
+    case -EINVAL:
+        return NDIS_STATUS_INVALID_DEVICE_REQUEST;
+    default:
+        return NDIS_STATUS_FAILURE;
+    }
+}
+
 /**********************************************************
 Initializes the context structure
 Major variables, received from NDIS on initialization, must be be set before this call
@@ -2013,7 +2029,7 @@ ParaNdis_UpdateGuestOffloads(PARANDIS_ADAPTER *pContext, UINT64 Offloads)
 }
 #endif
 
-VOID ParaNdis_PowerOn(PARANDIS_ADAPTER *pContext)
+NDIS_STATUS ParaNdis_PowerOn(PARANDIS_ADAPTER *pContext)
 {
     UINT i;
 
@@ -2053,6 +2069,8 @@ VOID ParaNdis_PowerOn(PARANDIS_ADAPTER *pContext)
     pContext->bFastSuspendInProcess = FALSE;
 
     ParaNdis_DebugHistory(pContext, hopPowerOn, NULL, 0, 0, 0);
+
+    return NDIS_STATUS_SUCCESS;
 }
 
 VOID ParaNdis_PowerOff(PARANDIS_ADAPTER *pContext)
