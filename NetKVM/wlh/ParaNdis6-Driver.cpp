@@ -196,23 +196,6 @@ static NDIS_STATUS ParaNdis6_Initialize(
         }
     }
 
-#pragma warning(push)
-#pragma warning(disable:28197)
-    if (status == NDIS_STATUS_SUCCESS)
-    {
-        pContext->IODevice = (VirtIODevice *)NdisAllocateMemoryWithTagPriority(
-            miniportAdapterHandle,
-            sizeof(VirtIODevice),
-            PARANDIS_MEMORY_TAG,
-            NormalPoolPriority);
-#pragma warning(pop)
-        if (!pContext->IODevice)
-        {
-            DPrintf(0, ("[%s] ERROR: IODevice memory allocation failed!\n", __FUNCTION__));
-            status = NDIS_STATUS_RESOURCES;
-        }
-    }
-
     if (status == NDIS_STATUS_SUCCESS)
     {
         /* prepare statistics struct for further reports */
@@ -342,10 +325,6 @@ static NDIS_STATUS ParaNdis6_Initialize(
         }
 
         pContext->m_PauseLock.~CNdisRWLock();
-
-        if (pContext->IODevice != nullptr)
-            NdisFreeMemoryWithTagPriority(pContext->MiniportHandle, pContext->IODevice, PARANDIS_MEMORY_TAG);
-
 
         NdisFreeMemory(pContext, 0, 0);
         pContext = NULL;
