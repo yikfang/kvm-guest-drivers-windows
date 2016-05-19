@@ -1440,7 +1440,7 @@ VOID ParaNdis_QueueRSSDpc(PARANDIS_ADAPTER *pContext, ULONG MessageIndex, PGROUP
     UNREFERENCED_PARAMETER(MessageIndex);
     UNREFERENCED_PARAMETER(pTargetAffinity);
 
-    ASSERT(FALSE);
+    NETKVM_ASSERT(FALSE);
 #endif
 }
 
@@ -1515,7 +1515,7 @@ UpdateReceiveSuccessStatistics(PPARANDIS_ADAPTER pContext,
     }
     else
     {
-        ASSERT(FALSE);
+        NETKVM_ASSERT(FALSE);
     }
 }
 

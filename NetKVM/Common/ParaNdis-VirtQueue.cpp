@@ -61,7 +61,7 @@ bool CVirtQueue::Create(UINT Index,
 
     m_UsePublishedIndices = UsePublishedIndices;
 
-    ASSERT(m_VirtQueue == nullptr);
+    NETKVM_ASSERT(m_VirtQueue == nullptr);
 
     if (AllocateQueueMemory())
     {
@@ -389,7 +389,7 @@ bool CTXDescriptor::SetupHeaders(ULONG ParsedHeadersLength)
     }
     else
     {
-        ASSERT(ParsedHeadersLength >= ETH_HEADER_SIZE);
+        NETKVM_ASSERT(ParsedHeadersLength >= ETH_HEADER_SIZE);
 
         if (!AddDataChunk(m_Headers.VirtioHeaderPA(), m_Headers.VirtioHeaderLength()) ||
             !AddDataChunk(m_Headers.EthHeaderPA(), ETH_HEADER_SIZE) ||
