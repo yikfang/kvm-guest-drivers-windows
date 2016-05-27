@@ -1,6 +1,4 @@
-#include "utils.h"
-#include "service.h"
-#include "strsafe.h"
+#include "stdafx.h"
 
 #pragma warning(disable:4996)
 
