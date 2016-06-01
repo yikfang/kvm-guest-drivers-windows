@@ -746,7 +746,17 @@ NDIS_STATUS ParaNdis_InitializeContext(
         pContext->bCtrlVLANFiltersSupported = AckFeature(pContext, VIRTIO_NET_F_CTRL_VLAN);
     }
 
-    VirtIODeviceWriteGuestFeatures(pContext->IODevice, pContext->u32GuestFeatures);
+    if (status == NDIS_STATUS_SUCCESS)
+    {
+        pContext->IODevice.features = pContext->u64GuestFeatures;
+        int err = virtio_finalize_features(&pContext->IODevice);
+        if (err != 0)
+        {
+            DPrintf(0, ("[%s] virtio_finalize_features failed with %d\n", __FUNCTION__, err));
+            status = ErrorToNdisStatus(err);
+        }
+    }
+
     DEBUG_EXIT_STATUS(0, status);
     return status;
 }
@@ -1221,11 +1231,6 @@ VOID ParaNdis_CleanupContext(PARANDIS_ADAPTER *pContext)
     ensure all the incoming packets returned,
     free all the buffers and their descriptors
     *****************************************/
-
-    if (pContext->IODevice->addr)
-    {
-        ParaNdis_ResetVirtIONetDevice(pContext);
-    }
 
     ParaNdis_SetLinkState(pContext, MediaConnectStateUnknown);
     VirtIONetRelease(pContext);

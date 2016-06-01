@@ -98,6 +98,8 @@ typedef struct _tagPARANDIS_RECEIVE_QUEUE
 #include "ParaNdis-RX.h"
 #include "ParaNdis-CX.h"
 
+#include "ParaNdis-VirtIO.h"
+
 struct CPUPathesBundle : public CPlacementAllocatable {
     CParaNdisRX rxPath;
     bool        rxCreated = false;
@@ -329,9 +331,11 @@ typedef struct _tagPARANDIS_ADAPTER
     NDIS_HANDLE             MiniportHandle;
     NDIS_HANDLE             InterruptHandle;
     NDIS_HANDLE             BufferListsPool;
-    tAdapterResources       AdapterResources;
-    PVOID                   pIoPortOffset;
-    VirtIODevice            *IODevice;
+
+    CPciResources           PciResources;
+    VirtIODevice            IODevice;
+    CNdisSharedMemory       *pPageAllocator;
+
     LARGE_INTEGER           LastTxCompletionTimeStamp;
 #ifdef PARANDIS_DEBUG_INTERRUPTS
     LARGE_INTEGER           LastInterruptTimeStamp;

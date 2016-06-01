@@ -307,9 +307,6 @@ static NDIS_STATUS ParaNdis6_Initialize(
         pContext->m_RxStateMachine.~CDataFlowStateMachine();
         pContext->m_StateMachine.~CMiniportStateMachine();
 
-        if (pContext->IODevice != nullptr)
-            NdisFreeMemoryWithTagPriority(pContext->MiniportHandle, pContext->IODevice, PARANDIS_MEMORY_TAG);
-
         NdisFreeMemory(pContext, 0, 0);
         pContext = NULL;
     }
