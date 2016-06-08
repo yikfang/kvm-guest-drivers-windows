@@ -625,7 +625,7 @@ tChecksumCheckResult ParaNdis_CheckRxChecksum(
                                             PARANDIS_ADAPTER *pContext,
                                             ULONG virtioFlags,
                                             tCompletePhysicalAddress *pPacketPages,
-                                            ULONG ulPacketLength,
+                                            PNET_PACKET_INFO pPacketInfo,
                                             ULONG ulDataOffset,
                                             BOOLEAN verifyLength);
 
